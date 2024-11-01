@@ -27,6 +27,17 @@ class UserServiceImpl implements UserService, UserProvider {
     }
 
     @Override
+    public User deleteUser(final Long userId){
+        log.info("Deleting User {}", userId);
+        final Optional<User> user = userRepository.findById(userId);
+        if(user.isEmpty()){
+            throw new IllegalArgumentException("User " + userId + " not Found");
+        }
+        userRepository.deleteById(userId);
+        return user.get();
+    }
+
+    @Override
     public Optional<User> getUser(final Long userId) {
         return userRepository.findById(userId);
     }
