@@ -11,6 +11,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -73,9 +74,15 @@ class UserController {
         return users;
     }
 
-    @GetMapping("/{userId}")
-    public void updateUser(@PathVariable Long userId){
-
+    @PutMapping("/{userId}")
+    public User updateUser(@PathVariable Long userId, @RequestBody UserDto updateRequest){
+        Optional<User> user = userService.getUser(userId);
+        if(user.isEmpty())
+        {
+            throw new IllegalArgumentException("User " + userId + " not Found");
+        }
+        //return userService.updateUser(userMapper.toUpdateDto(user, updateRequest));
+        return userService.updateUserById(userMapper.toUpdateEntity(user.get(), updateRequest));
     }
 
     @PostMapping

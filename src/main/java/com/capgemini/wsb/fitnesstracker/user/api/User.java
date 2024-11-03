@@ -49,5 +49,20 @@ public class User {
         this.email = email;
     }
 
+    public void setFirstName(String name) {
+        this.firstName = name;
+    }
+
+    public void setLastName(String name) {
+        this.lastName = name;
+    }
+
+    public void setBirthDate(LocalDate date) {
+        this.birthdate = date;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 }
 

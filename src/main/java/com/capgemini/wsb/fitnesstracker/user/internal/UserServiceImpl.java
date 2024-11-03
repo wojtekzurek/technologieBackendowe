@@ -45,6 +45,18 @@ class UserServiceImpl implements UserService, UserProvider {
     @Override
     public Optional<User> getUserByEmail(final String email) {
         return userRepository.findByEmail(email);
+//        return findAllUsers().stream()
+//                .filter(user -> user.getEmail().toLowerCase().contains(email.toLowerCase()))
+//                .toList();
+    }
+
+    @Override
+    public User updateUserById(final User user){
+        if(user.getId() == null)
+        {
+            throw new IllegalArgumentException("User not Found");
+        }
+        return userRepository.save(user);
     }
 
     @Override

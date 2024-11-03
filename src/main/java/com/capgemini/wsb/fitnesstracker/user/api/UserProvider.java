@@ -30,4 +30,6 @@ public interface UserProvider {
      */
     List<User> findAllUsers();
 
+    public User updateUserById(User user);
+
 }
