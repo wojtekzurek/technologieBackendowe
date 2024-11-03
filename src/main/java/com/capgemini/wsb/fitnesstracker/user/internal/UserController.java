@@ -8,8 +8,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/v1/users")
@@ -54,6 +56,26 @@ class UserController {
                 .map(userMapper::toSimpleByEmail)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         return Collections.singletonList(user);
+    }
+
+    @GetMapping("/older/{time}")
+    public List<User> getUsersOlderThan(@PathVariable LocalDate time){
+        int expectedYear = time.getYear();
+        int expectedDayOfYear = time.getDayOfYear();
+
+        List<User> users = userService.findAllUsers()
+                .stream()
+                .filter(user -> user.getBirthdate().getYear() < expectedYear ||
+                        user.getBirthdate().getYear() - expectedYear == 0 &&
+                        user.getBirthdate().getDayOfYear() < expectedDayOfYear)
+                .collect(Collectors.toList());
+
+        return users;
+    }
+
+    @GetMapping("/{userId}")
+    public void updateUser(@PathVariable Long userId){
+
     }
 
     @PostMapping

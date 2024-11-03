@@ -30,6 +30,10 @@ public class User {
     @Column(name = "birthdate", nullable = false)
     private LocalDate birthdate;
 
+    public LocalDate getBirthdate(){
+        return birthdate;
+    }
+
     @Column(nullable = false, unique = true)
     private String email;
 
