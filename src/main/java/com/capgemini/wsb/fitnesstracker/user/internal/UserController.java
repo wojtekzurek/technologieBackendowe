@@ -1,10 +1,12 @@
 package com.capgemini.wsb.fitnesstracker.user.internal;
 
 import com.capgemini.wsb.fitnesstracker.user.api.User;
+import com.capgemini.wsb.fitnesstracker.user.api.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -37,6 +39,13 @@ class UserController {
                 .stream()
                 .map(userMapper::toSimpleDto)
                 .toList();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<User> getUserById(@PathVariable Long id){
+        User user = userService.getUser(id)
+                .orElseThrow(() -> new UserNotFoundException(id));
+        return ResponseEntity.ok(user);
     }
 
     @ResponseStatus(HttpStatus.CREATED)
